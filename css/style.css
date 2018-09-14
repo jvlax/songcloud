@@ -35,6 +35,9 @@ body {
 }
 #submitSearch {
   color: white;
+  -webkit-appearance: none;
+  background: transparent;
+  border: none;
 }
 
 @media screen and (min-width: 813px) {
