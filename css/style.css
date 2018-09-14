@@ -33,12 +33,12 @@ body {
 .searchField {
   padding-left: 10px;
 }
-#submitSerarch {
+#submitSearch {
   color: white;
 }
 
 @media screen and (min-width: 813px) {
-  #submitSerarch {
+  #submitSearch {
     display: none;
   }
 }
