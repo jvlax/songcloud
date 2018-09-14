@@ -66,6 +66,8 @@ function getList(artist, song, callback) {
 		lyrics = lyrics.split("\n");
 		lyrics.forEach(function(line) {
 			line = line.replace(/\"\'.*:\"\'/g, "");
+			line = line.replace(/\<.*\>/g, "");
+
 			line = line.split(" ");
 			line.forEach(function(word) {
 				word = word.replace(/[^a-zA-Z\']/g, "");
