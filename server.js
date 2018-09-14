@@ -168,5 +168,5 @@ function getAlbumColors(url, callback) {
 	});
 }
 
-app.listen(1337);
+app.listen(8080);
 console.log("server up on port 8080");
