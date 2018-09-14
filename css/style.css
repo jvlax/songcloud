@@ -2,13 +2,16 @@
   width: 80%;
   height: 80%;
 }
+
 #wrapper {
   width: 100vw;
   height: 100vh;
 }
+
 body {
   background-color: #292d27;
 }
+
 .cloudSearch {
   background: transparent;
   border-top: none;
@@ -18,7 +21,6 @@ body {
   color: #ffff;
 }
 
-
 .cloudSearch:focus {
   background: transparent;
   border-top: none;
@@ -26,14 +28,45 @@ body {
   border-right: none;
   box-shadow: none;
   color: #ffff;
-
 }
+
 .searchField {
   padding-left: 10px;
 }
+
 @media screen and (min-width: 813px) {
-	#submitSerarch {
- 	display: none;
-       }	
+  #submitSerarch {
+    display: none;
+  }
 }
 
+@media screen and (orientation: portrait) {
+  #turnPhone {
+    color: white;
+    background-color: #000;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    position: fixed;
+  }
+  #phoneIcon {
+    -webkit-filter: invert(100%);
+    /* safari 6.0 - 9.0 */
+    filter: invert(100%);
+    width: 50%;
+    height: auto;
+  }
+  #phoneWrap {
+    padding-top: 30vh;
+  }
+}
+@media screen and (orientation: landscape) {
+  #phoneWrap {
+    display: none;
+  }
+}
+#search {
+  color: white;
+}

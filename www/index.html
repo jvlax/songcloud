@@ -15,7 +15,11 @@
   <script src="/js/wordcloud2.js"></script>
 
   <body>
-
+    <div id="turnPhone" class="text-center">
+      <div id="phoneWrap">
+      <img id="phoneIcon" src="/images/rotatephone.svg">
+    </div>
+    </div>
     <div class="container">
       <form id="search" autocomplete="off">
       <div class="row justify-content-center align-items-center">
@@ -25,7 +29,7 @@
         <div class="md-form searchField">
           <input id="song" name="song" class="form-control cloudSearch" type="text" placeholder="Song" aria-label="Search">
         </div>
-        <input class="btn btn-dark" id="submitSerarch" type="submit" value="Submit"/>
+        <input id="search" id="submitSerarch" type="submit" value="Submit"/>
 
       </div>
     </form>
