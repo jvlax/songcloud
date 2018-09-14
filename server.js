@@ -16,6 +16,7 @@ var index = 'www/index.html';
 var css = 'css/style.css';
 var spotifyID = process.env.SPOTIFYID;
 var spotifySecret = process.env.SPOTIFYSECRET;
+var port = process.env.SONGCLOUDPORT;
 
 var spotify = new Spotify({
 	id: spotifyID,
@@ -168,5 +169,5 @@ function getAlbumColors(url, callback) {
 	});
 }
 
-app.listen(8080);
-console.log("server up on port 8080");
+app.listen(port);
+console.log("server up on port: " + port);
