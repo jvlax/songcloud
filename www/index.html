@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>lyricsCloud</title>
+  <title>songcloud</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://getbootstrap.com/docs/4.1/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -51,7 +51,6 @@
       function setOptions(artist, song, callback) {
         console.log(artist, song);
         getList(artist, song, function(list) {
-          //var list = '[["I",13],["miss",2],["the",9],["Kanye",14],["up",2],["The",2],["to",4],["that",2],["like",2],["it",2],["Kanyes",2],["And",2],["look",2],["and",2],["so",2],["used",2],["love",4],["was",2],["#ec8a55","#291e1d","#e1d8bd","#823328","#f6d194"]]';
           var list = JSON.parse(list);
           var colors = list.pop();
           var backgroundColor = colors.shift();
@@ -96,4 +95,3 @@
   </body>
 
 </html>
-
