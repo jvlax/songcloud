@@ -1,6 +1,5 @@
 var express = require('express');
 var fs = require('fs');
-var express = require('express');
 var app = express();
 var lyrics = require('lyrics-fetcher');
 var Spotify = require('node-spotify-api');
