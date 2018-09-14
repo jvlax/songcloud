@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>lyricsCloud</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://getbootstrap.com/docs/4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Overpass+Mono" rel="stylesheet">
+  <link rel="stylesheet" href="/songcloud/css/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="http://getbootstrap.com/docs/4.0/assets/js/vendor/popper.min.js"></script>
+  <script src="http://getbootstrap.com/docs/4.0/dist/js/bootstrap.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.0.13/js/all.js" integrity="sha384-xymdQtn1n3lH2wcu0qhcdaOpQwyoarkgLVxC/wZ5q7h9gHtxICrpcaSUfygqZGOe" crossorigin="anonymous"></script>
+  <script src="/js/wordcloud2.js"></script>
+
+  <body>
+
+    <div class="container">
+      <form id="search" autocomplete="off">
+      <div class="row justify-content-center align-items-center">
+        <div class="md-form searchField">
+          <input id="artist" name="artist" class="form-control cloudSearch" type="text" placeholder="Artist" aria-label="Search">
+        </div>
+        <div class="md-form searchField">
+          <input id="song" name="song" class="form-control cloudSearch" type="text" placeholder="Song" aria-label="Search">
+        </div>
+        <input class="btn btn-dark" id="submitSerarch" type="submit" value="Submit"/>
+
+      </div>
+    </form>
+    </div>
+
+    <div id="wrapper" class="row justify-content-center align-items-center">
+      <div id="cloud"></div>
+    </div>
+
+    <script>
+      function getList(artist, song, callback) {
+        $.ajax({
+          url: '/songcloud/list?artist=' + artist +'&song=' + song,
+          cache: false,
+          dataType: "text",
+          success: function(result) {
+            callback(result);
+          }
+        });
+      }
+
+
+      function setOptions(artist, song, callback) {
+        console.log(artist, song);
+        getList(artist, song, function(list) {
+          //var list = '[["I",13],["miss",2],["the",9],["Kanye",14],["up",2],["The",2],["to",4],["that",2],["like",2],["it",2],["Kanyes",2],["And",2],["look",2],["and",2],["so",2],["used",2],["love",4],["was",2],["#ec8a55","#291e1d","#e1d8bd","#823328","#f6d194"]]';
+          var list = JSON.parse(list);
+          var colors = list.pop();
+          var backgroundColor = colors.shift();
+          console.log(colors);
+          console.log(list);
+          var options = {
+            list: list,
+            //gridSize: Math.round(16 * $('#cloud').width() / 1024),
+            gridSize: 3,
+            //weightFactor: function(size) {
+            //  return Math.pow(size, 2.23) * $('#cloud').width() / 768;
+            //},
+            weightFactor: 7,
+            fontFamily: 'Times, serif',
+            color: function() {
+              var returnColor = colors[Math.floor(Math.random() * colors.length)];
+              return returnColor;
+              //return (weight === 12) ? '#f4ff00' : '#c09292';
+              //return (weight === 11) ? '#bdff00' : '#c09292';
+
+            },
+            rotateRatio: 0.5,
+            rotationSteps: 2,
+            backgroundColor: backgroundColor,
+            drawOutOfBound: true
+          };
+          callback(options);
+        });
+      }
+
+      $('#search').submit(function(){
+        var artist = $("#artist").val();
+        var song = $("#song").val()
+        setOptions(artist, song, function(options) {
+          WordCloud(document.getElementById('cloud'), options);
+        });
+        return false;
+      });
+
+
+    </script>
+  </body>
+
+</html>
+

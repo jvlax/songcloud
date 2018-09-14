@@ -1,0 +1,39 @@
+#cloud {
+  width: 80%;
+  height: 80%;
+}
+#wrapper {
+  width: 100vw;
+  height: 100vh;
+}
+body {
+  background-color: #292d27;
+}
+.cloudSearch {
+  background: transparent;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+  color: #ffff;
+}
+
+
+.cloudSearch:focus {
+  background: transparent;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  box-shadow: none;
+  color: #ffff;
+
+}
+.searchField {
+  padding-left: 10px;
+}
+@media screen and (min-width: 813px) {
+	#submitSerarch {
+ 	display: none;
+       }	
+}
+
