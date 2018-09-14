@@ -14,6 +14,8 @@ var bodyParser = require("body-parser");
 
 var index = 'www/index.html';
 var css = 'css/style.css';
+var spotifyID = process.env.SPOTIFYID;
+var spotifySecret = process.env.SPOTIFYSECRET;
 
 app.use('/js', express.static(__dirname + '/js'));
 app.use('/file', express.static(__dirname + '/file'));
@@ -133,8 +135,8 @@ app.get('/list2', function(req, res) {
 
 
 var spotify = new Spotify({
-id: process.env.SPOTIFYID,
-secret: process.env.SPOTIFYSECRET
+id: spotifyID,
+secret: spotifySecret
 });
 
 
