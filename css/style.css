@@ -33,6 +33,9 @@ body {
 .searchField {
   padding-left: 10px;
 }
+#submitSerarch {
+  color: white;
+}
 
 @media screen and (min-width: 813px) {
   #submitSerarch {
@@ -66,7 +69,4 @@ body {
   #phoneWrap {
     display: none;
   }
-}
-#search {
-  color: white;
 }
