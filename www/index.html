@@ -130,7 +130,6 @@
         var shareUrl = window.location.origin + window.location.pathname + "?artist=" + urlArtist.replace(/\s/g, "+") + "&song=" + urlSong.replace(/\s/g, "+");
         var shareHTML = '<input id="shareCloud" value="' + shareUrl + '"><button id="copyMe" data-clipboard-target="#shareCloud"><i class="far fa-copy"></i></button>';
         document.getElementById('copyLink').setAttribute("data-content", shareHTML);
-        document.getElementById('copyLink').style.display = "block";
         getList(artist, song, function(list) {
           var list = JSON.parse(list);
           var colors = list.pop();
@@ -191,6 +190,7 @@
           $('html, body').animate({
             scrollTop: ($('#cloud').offset().top)
           }, 500);
+          document.getElementById('copyLink').style.display = "block";
           return false;
         }
       });
@@ -206,6 +206,7 @@
         $('html, body').animate({
           scrollTop: ($('#cloud').offset().top)
         }, 500);
+        document.getElementById('copyLink').style.display = "block";
         return false;
       });
 
