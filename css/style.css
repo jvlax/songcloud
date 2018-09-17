@@ -106,3 +106,10 @@ body {
   -moz-appearance: none;
   appearance: none;
 }
+#copyMe {
+  background: transparent;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
