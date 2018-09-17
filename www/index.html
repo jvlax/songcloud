@@ -34,6 +34,9 @@
       </div>
     </form>
     </div>
+    <div class="row justify-content-center align-items-center" style="padding-top: 20px;">
+      <iframe id="spotifyEmbed" src="" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+    </div>
 
     <div id="wrapper" class="row justify-content-center align-items-center">
       <div id="cloud"></div>
@@ -57,9 +60,9 @@
         getList(artist, song, function(list) {
           var list = JSON.parse(list);
           var colors = list.pop();
+          var embedID = list.pop();
+          document.getElementById('spotifyEmbed').src = 'https://open.spotify.com/embed/track/' + embedID;
           var backgroundColor = colors.shift();
-          console.log(colors);
-          console.log(list);
           var options = {
             list: list,
             //gridSize: Math.round(16 * $('#cloud').width() / 1024),
@@ -91,6 +94,10 @@
         setOptions(artist, song, function(options) {
           WordCloud(document.getElementById('cloud'), options);
         });
+        console.log("scroll");
+        $('html, body').animate({
+          scrollTop: ($('#cloud').offset().top)
+        }, 500);
         return false;
       });
 

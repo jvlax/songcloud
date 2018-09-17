@@ -88,6 +88,8 @@ function getList(artist, song, callback) {
 		searchSong.replace(/\s/g, "+");
 
 		getArtist(searchArtist, searchSong, function(result) {
+			//console.log(result.tracks.items[0].id);
+			list.push(result.tracks.items[0].id);
 			getAlbum(result.tracks.items[0].album.id, function(album) {
 				getAlbumColors(album.images[0], function(colors) {
 					list.push(colors);
