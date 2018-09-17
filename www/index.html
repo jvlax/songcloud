@@ -129,9 +129,8 @@
         var urlSong = song;
         var shareUrl = window.location.origin + window.location.pathname + "?artist=" + urlArtist.replace(/\s/g, "+") + "&song=" + urlSong.replace(/\s/g, "+");
         var shareHTML = '<input id="shareCloud" value="' + shareUrl + '"><button id="copyMe" data-clipboard-target="#shareCloud" aria-label="Copied!"><i class="far fa-copy"></i></button>';
-
-        console.log(artist, song);
         document.getElementById('copyLink').setAttribute("data-content", shareHTML);
+        document.getElementById('copyLink').style.display = "block";
         getList(artist, song, function(list) {
           var list = JSON.parse(list);
           var colors = list.pop();

@@ -97,6 +97,7 @@ body {
   z-index: 2;
 }
 #copyLink {
+  display: none;
   padding: 3px;
   font-size: 2em;
   background: transparent;
