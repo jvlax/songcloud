@@ -12,63 +12,107 @@
   <script src="http://getbootstrap.com/docs/4.0/assets/js/vendor/popper.min.js"></script>
   <script src="http://getbootstrap.com/docs/4.0/dist/js/bootstrap.min.js"></script>
   <script src="https://use.fontawesome.com/releases/v5.0.13/js/all.js" integrity="sha384-xymdQtn1n3lH2wcu0qhcdaOpQwyoarkgLVxC/wZ5q7h9gHtxICrpcaSUfygqZGOe" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
   <script src="/js/wordcloud2.js"></script>
 
   <body>
     <div id="turnPhone" class="text-center">
       <div id="phoneWrap">
-      <img id="phoneIcon" src="/images/rotatephone.svg">
-    </div>
+        <img id="phoneIcon" src="/images/rotatephone.svg">
+      </div>
     </div>
     <div class="container">
       <form id="search" autocomplete="off">
-      <div class="row justify-content-center align-items-center flex-nowrap">
-        <div class="md-form searchField">
-          <input id="artist" name="artist" class="form-control cloudSearch" type="text" placeholder="Artist" aria-label="Search">
-        </div>
-        <div class="md-form searchField">
-          <input id="song" name="song" class="form-control cloudSearch" type="text" placeholder="Song" aria-label="Search">
-        </div>
-        <input id="submitSearch" type="submit" value="Submit"/>
+        <div class="row justify-content-center align-items-center flex-nowrap">
+          <div class="md-form searchField">
+            <input id="artist" name="artist" class="form-control cloudSearch" type="text" placeholder="Artist" aria-label="Search">
+          </div>
+          <div class="md-form searchField">
+            <input id="song" name="song" class="form-control cloudSearch" type="text" placeholder="Song" aria-label="Search">
+          </div>
+          <input id="submitSearch" type="submit" value="Submit" />
 
-      </div>
-    </form>
+        </div>
+      </form>
     </div>
     <div class="row justify-content-center align-items-center" style="padding-top: 20px;">
       <iframe id="spotifyEmbed" src="" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
     </div>
 
     <div id="wrapper" class="row justify-content-center align-items-center">
+      <div id="share">
+        <span id="copyLink" class="fas fa-share" data-container="body" data-toggle="popover" data-placement="top" data-content=""></span>
+      </div>
       <div id="cloud"></div>
     </div>
 
     <script>
+      new ClipboardJS('.btn');
+
+
+      function invertColor(hexTripletColor) {
+        var color = hexTripletColor;
+        color = color.substring(1); // remove #
+        color = parseInt(color, 16); // convert to integer
+        color = 0xFFFFFF ^ color; // invert three bytes
+        color = color.toString(16); // convert to hex
+        color = ("000000" + color).slice(-6); // pad with leading zeros
+        color = "#" + color; // prepend #
+        return color;
+      }
+
       function getList(artist, song, callback) {
         $.ajax({
-          url: '/songcloud/list?artist=' + artist +'&song=' + song,
+          url: '/songcloud/list?artist=' + artist + '&song=' + song,
           cache: false,
           dataType: "text",
           success: function(result) {
+            console.log(result);
             callback(result);
           }
         });
       }
 
 
+      var getUrlParameter = function getUrlParameter(sParam) {
+        var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+          sURLVariables = sPageURL.split('&'),
+          sParameterName,
+          i;
+
+        for (i = 0; i < sURLVariables.length; i++) {
+          sParameterName = sURLVariables[i].split('=');
+
+          if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+          }
+        }
+      };
+
+
       function setOptions(artist, song, callback) {
+        var urlArtist = artist;
+        var urlSong = song;
+        var shareUrl = window.location.origin + window.location.pathname + "?artist=" + urlArtist.replace(/\s/g, "+") + "&song=" + urlSong.replace(/\s/g, "+");
+        var shareHTML = '<input id="shareCloud" value="' + shareUrl + '"><button class="btn" data-clipboard-target="#shareCloud"><i class="far fa-copy"></i></button>';
+
         console.log(artist, song);
+        document.getElementById('copyLink').setAttribute("data-content", shareHTML);
         getList(artist, song, function(list) {
           var list = JSON.parse(list);
           var colors = list.pop();
           var embedID = list.pop();
           document.getElementById('spotifyEmbed').src = 'https://open.spotify.com/embed/track/' + embedID;
           var backgroundColor = colors.shift();
+          var shareButtonColor = invertColor(backgroundColor);
+          document.getElementById('copyLink').style.color = shareButtonColor;
           var options = {
             list: list,
-            //gridSize: Math.round(16 * $('#cloud').width() / 1024),
+            //gridSize: Math.round(16 * $('#cloud').width() / $('#cloud').width()),
             gridSize: 3,
             //weightFactor: function(size) {
-            //  return Math.pow(size, 2.23) * $('#cloud').width() / 768;
+            //console.log(Math.pow(size, 2.23) * $('#cloud').width() / $('#cloud').width());
+            //return Math.pow(size, 2.23) * $('#cloud').width() / $('#cloud').width();
             //},
             weightFactor: 7,
             fontFamily: 'Times, serif',
@@ -88,20 +132,65 @@
         });
       }
 
-      $('#search').submit(function(){
+      $(function() {
+        $('[data-toggle="popover"]').popover({
+          html: true
+        })
+      });
+
+      $('body').on('click', function(e) {
+        $('[data-toggle="popover"]').each(function() {
+          //the 'is' for buttons that trigger popups
+          //the 'has' for icons within a button that triggers a popup
+          if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+            $(this).popover('hide');
+          }
+        });
+      });
+
+      $(document).ready(function() {
+        var artist = getUrlParameter('artist');
+        var song = getUrlParameter('song');
+        if (artist, song) {
+          setOptions(artist, song, function(options) {
+            WordCloud(document.getElementById('cloud'), options);
+          });
+          $('html, body').animate({
+            scrollTop: ($('#cloud').offset().top)
+          }, 500);
+          return false;
+        }
+      });
+
+
+      $('#search').submit(function() {
         var artist = $("#artist").val();
         var song = $("#song").val()
         setOptions(artist, song, function(options) {
           WordCloud(document.getElementById('cloud'), options);
         });
-        console.log("scroll");
+
         $('html, body').animate({
           scrollTop: ($('#cloud').offset().top)
         }, 500);
         return false;
       });
 
+      $('body').append('<div id="backToTop" class="btn btn-lg"><span class="fas fa-chevron-up"></span></div>');
+      $(window).scroll(function() {
+        if ($(this).scrollTop() <= 1) {
+          $('#backToTop').fadeOut();
+        } else {
+          $('#backToTop').fadeIn();
+        }
+      });
 
+      $('#backToTop').click(function() {
+        $("html, body").animate({
+          scrollTop: 0
+        }, 600);
+        return false;
+      });
     </script>
   </body>
 

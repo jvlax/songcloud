@@ -7,10 +7,14 @@
   width: 100vw;
   height: 100vh;
   margin: auto;
+  position: relative;
 }
-
-
-
+#share {
+  width: 90%;
+  height: 90%;
+  position: absolute;
+  z-index: 1;
+}
 body {
   background-color: #292d27;
 }
@@ -79,4 +83,20 @@ body {
   #phoneWrap {
     display: none;
   }
+}
+
+#backToTop {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  cursor: pointer;
+  display: none;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 0;
+  z-index: 2;
+}
+#copyLink {
+  padding: 3px;
+  font-size: 2em;
 }
