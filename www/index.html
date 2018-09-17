@@ -50,7 +50,38 @@
     </div>
 
     <script>
-      new ClipboardJS('.btn');
+      //new ClipboardJS('#copyMe');
+
+      $('#copyMe').tooltip({
+        trigger: 'click',
+        placement: 'bottom'
+      });
+
+      function setTooltip(btn, message) {
+        $(btn).tooltip('hide')
+          .attr('data-original-title', message)
+          .tooltip('show');
+      }
+
+      function hideTooltip(btn) {
+        setTimeout(function() {
+          $(btn).tooltip('hide');
+        }, 1000);
+      }
+
+      // Clipboard
+
+      var clipboard = new ClipboardJS('#copyMe');
+
+      clipboard.on('success', function(e) {
+        setTooltip(e.trigger, 'Copied!');
+        hideTooltip(e.trigger);
+      });
+
+      clipboard.on('error', function(e) {
+        setTooltip(e.trigger, 'Failed!');
+        hideTooltip(e.trigger);
+      });
 
 
       function invertColor(hexTripletColor) {
@@ -97,7 +128,7 @@
         var urlArtist = artist;
         var urlSong = song;
         var shareUrl = window.location.origin + window.location.pathname + "?artist=" + urlArtist.replace(/\s/g, "+") + "&song=" + urlSong.replace(/\s/g, "+");
-        var shareHTML = '<input id="shareCloud" value="' + shareUrl + '"><button class="btn" data-clipboard-target="#shareCloud"><i class="far fa-copy"></i></button>';
+        var shareHTML = '<input id="shareCloud" value="' + shareUrl + '"><button id="copyMe" data-clipboard-target="#shareCloud" aria-label="Copied!"><i class="far fa-copy"></i></button>';
 
         console.log(artist, song);
         document.getElementById('copyLink').setAttribute("data-content", shareHTML);
