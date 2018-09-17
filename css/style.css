@@ -99,8 +99,6 @@ body {
 #copyLink {
   padding: 3px;
   font-size: 2em;
-}
-#copyLinkIcon {
   background: transparent;
   border: none;
   -webkit-appearance: none;
