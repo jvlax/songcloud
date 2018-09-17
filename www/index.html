@@ -50,7 +50,53 @@
     </div>
 
     <script>
-      //new ClipboardJS('#copyMe');
+      var preLoad = "no";
+/*
+      function doOnOrientationChange() {
+          switch(window.orientation) {
+            case -90 || 90:
+            if ( preLoad == "yes" ) {
+              console.log("load it!")
+              var artist = getUrlParameter('artist');
+              var song = getUrlParameter('song');
+              setOptions(artist, song, function(options) {
+                WordCloud(document.getElementById('cloud'), options);
+              });
+
+              $('html, body').animate({
+                scrollTop: ($('#cloud').offset().top)
+              }, 500);
+              return false;
+              break;
+            }
+            default:
+              break;
+          }
+      }
+*/
+window.addEventListener('orientationchange', doOnOrientationChange);
+
+
+function doOnOrientationChange()
+{
+      if (screen.height > screen.width) {
+
+      } else {
+         if ( preLoad == "yes" ) {
+           var artist = getUrlParameter('artist');
+           var song = getUrlParameter('song');
+           setOptions(artist, song, function(options) {
+             WordCloud(document.getElementById('cloud'), options);
+           });
+
+           $('html, body').animate({
+             scrollTop: ($('#cloud').offset().top)
+           }, 500);
+           preLoad = "no";
+           return false;
+         }
+      }
+}
 
       $('#copyMe').tooltip({
         trigger: 'click',
@@ -180,18 +226,28 @@
         });
       });
 
+      document.getElementById('cloud').addEventListener('wordcloudstop', function(e) {
+        document.getElementById('copyLink').style.display = "block";
+      });
+
+      window.addEventListener('orientationchange', doOnOrientationChange);
+
+
       $(document).ready(function() {
         var artist = getUrlParameter('artist');
         var song = getUrlParameter('song');
         if (artist, song) {
-          setOptions(artist, song, function(options) {
-            WordCloud(document.getElementById('cloud'), options);
-          });
-          $('html, body').animate({
-            scrollTop: ($('#cloud').offset().top)
-          }, 500);
-          document.getElementById('copyLink').style.display = "block";
-          return false;
+          preLoad = "yes";
+          if (window.innerWidth > window.innerHeight) {
+            setOptions(artist, song, function(options) {
+              WordCloud(document.getElementById('cloud'), options);
+            });
+
+            $('html, body').animate({
+              scrollTop: ($('#cloud').offset().top)
+            }, 500);
+            return false;
+          }
         }
       });
 
@@ -206,7 +262,6 @@
         $('html, body').animate({
           scrollTop: ($('#cloud').offset().top)
         }, 500);
-        document.getElementById('copyLink').style.display = "block";
         return false;
       });
 
