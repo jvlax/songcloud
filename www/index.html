@@ -80,8 +80,9 @@ window.addEventListener('orientationchange', doOnOrientationChange);
 function doOnOrientationChange()
 {
       if (screen.height > screen.width) {
-
+        console.log("portrait");
       } else {
+        console.log("landscape");
          if ( preLoad == "yes" ) {
            var artist = getUrlParameter('artist');
            var song = getUrlParameter('song');
