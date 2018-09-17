@@ -54,7 +54,6 @@ app.get('/songcloud/list', function(req, res) {
 			'Content-Type': 'text/html'
 		});
 		list = JSON.stringify(list);
-		console.log(list);
 		res.end(list);
 	});
 });
